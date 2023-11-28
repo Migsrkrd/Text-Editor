@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
+const workboxPlugin = require('workbox-webpack-plugin');
 const path = require('path');
 const { InjectManifest } = require('workbox-webpack-plugin');
 
@@ -11,34 +12,36 @@ module.exports = () => {
     mode: 'development',
     entry: {
       main: './src/js/index.js',
-      install: './src/js/install.js'
+      install: './src/js/install.js',
+      editor: './src/js/editor.js',
     },
     output: {
       filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
+      new workboxPlugin.GenerateSW(),
       new HtmlWebpackPlugin({
         template: './index.html',
         filename: 'index.html',
         chunks: ['main'],
       }),
       new WebpackPwaManifest({
-        name: 'Restaurant Reviews',
-        short_name: 'Restaurant Reviews',
-        description: 'Restaurant Reviews App',
+        name: 'Text Editor PWA',
+        short_name: 'Text Editor',
+        description: 'A simple text editor PWA',
         background_color: '#ffffff',
-        crossorigin: 'use-credentials',
+        crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
         icons: [
           {
             src: path.resolve('./favicon.ico'),
-            sizes: [96, 128, 192, 256, 384, 512]
+            sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
           },
         ],
       }),
       new InjectManifest({
         swSrc: './src-sw.js',
-        swDest: 'serviceWorker.js',
+        swDest: 'sw.js',
       }),
       
     ],
@@ -46,7 +49,7 @@ module.exports = () => {
     module: {
       rules: [
         {
-          test: /\.m?js$/,
+          test: /\.js$/,
           exclude: /node_modules/,
           use: {
               loader: 'babel-loader',
