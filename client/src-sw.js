@@ -29,6 +29,10 @@ registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 // TODO: Implement asset caching
 const assetCache = new CacheFirst({
   cacheName: 'asset-cache',
+  urls: [
+    '/assets/icons/icon_96x96.png',
+  
+  ],
   plugins: [
     new CacheableResponsePlugin({
       statuses: [0, 200],
@@ -39,15 +43,11 @@ const assetCache = new CacheFirst({
   ],
 });
 
-warmStrategyCache({
-  urls: ['/index.html', '/'],
-  strategy: assetCache,
-});
 
-registerRoute(({ request }) => request.mode === 'navigate', assetCache);
-
-offlineFallback({
-  pageFallback: '/index.html',
-});
-
-registerRoute();
+registerRoute(
+  ({ request }) =>
+    request.destination === 'script' ||
+    request.destination === 'style' ||
+    request.destination === 'png',
+  assetCache
+);

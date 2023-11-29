@@ -20,28 +20,32 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-      new workboxPlugin.GenerateSW(),
       new HtmlWebpackPlugin({
         template: './index.html',
-        filename: 'index.html',
-        chunks: ['main'],
+        title: 'Text Editor',
+
       }),
       new WebpackPwaManifest({
+        inject: true,
+        fingerprints: false,
         name: 'Text Editor PWA',
         short_name: 'Text Editor',
         description: 'A simple text editor PWA',
+        start_url: './',
+        publicPath: './',
         background_color: '#ffffff',
         crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
         icons: [
           {
-            src: path.resolve('./favicon.ico'),
+            src: path.resolve('src/images/logo.png'),
             sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
-          },
+            destination: path.join('assets', 'icons'),
+          }
         ],
       }),
-      new InjectManifest({
+      new workboxPlugin.InjectManifest({
         swSrc: './src-sw.js',
-        swDest: 'sw.js',
+        swDest: 'service-worker.js',
       }),
       
     ],
