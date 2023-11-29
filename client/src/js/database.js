@@ -7,39 +7,39 @@ const initdb = async () =>
         console.log('jate database already exists');
         return;
       }
-      db.createObjectStore('jate', { keyPath: 'id', autoIncrement: true });
+      db.createObjectStore('jate', { autoIncrement: true, keyPath: 'id' });
       console.log('jate database created');
     },
   });
 
-// TODO: Add logic to a method that accepts some content and adds it to the database
 export const putDb = async (content) => {
-const jatedb = await openDB('jate', 1,);
-const tx = jatedb.transaction('jate', 'readwrite');
-const store = tx.objectStore('jate');
-const request = store.put({id: 1, content: content});
-const result = await request;
-console.log(result, 'data added to database');
-if(!result) {
-  console.log('data not added to database');
-}
-return result;
-}
-
-
-// TODO: Add logic for a method that gets all the content from the database
-export const getDb = async () => {
-  console.log('GET all data from database');
-  const jatedb = await openDB('jate', 1,);
-  const tx = jatedb.transaction('jate', 'readonly');
+  const jatedb = await openDB('jate', 1);
+  const tx = jatedb.transaction('jate', 'readwrite');
   const store = tx.objectStore('jate');
-  const request = store.getAll();
+  const request = store.put({id: 1, value: content });
   const result = await request;
-  console.log(result, 'data retrieved from database');
-  if(!result) {
-    console.log('data not retrieved from database');
+  console.log(result, 'data added to database');
+  if (!result) {
+    console.log('data not added to database');
+    return;
   }
   return result;
-}
+};
+
+export const getDb = async() => {
+  console.log('GET all data from database');
+  const jatedb = await openDB('jate', 1);
+  const tx = jatedb.transaction('jate', 'readonly');
+  const store = tx.objectStore('jate');
+  const request = store.get(1);
+  const result = await request;
+  console.log(result.value,'data retrieved from database');
+  if (!result) {
+    console.log('data not retrieved from database');
+    return;
+  }
+  return result?.value;
+};
 
 initdb();
+

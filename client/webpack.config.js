@@ -31,8 +31,8 @@ module.exports = () => {
         name: 'Text Editor PWA',
         short_name: 'Text Editor',
         description: 'A simple text editor PWA',
-        start_url: './',
-        publicPath: './',
+        start_url: '/',
+        publicPath: '/',
         background_color: '#ffffff',
         crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
         icons: [
@@ -44,8 +44,7 @@ module.exports = () => {
         ],
       }),
       new workboxPlugin.InjectManifest({
-        swSrc: './src-sw.js',
-        swDest: 'service-worker.js',
+        swSrc: './src-sw.js'
       }),
       
     ],
