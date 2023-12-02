@@ -4,6 +4,8 @@
 
  This application uses node, javascript, html, css, json, indexedDb, and webpack to create a Progressive Web Application. The application functions to become a text-editor within your browser, or within the downloaded version. Use this application just as you would any other text editor! 
 
+[Deployed Link](https://salty-sierra-80916-ba0b5056f1f8.herokuapp.com/)
+
   ## Table of Contents
 
   * [Installation](#Installation)
